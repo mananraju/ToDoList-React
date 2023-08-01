@@ -10,7 +10,7 @@ export default function User() {
       </div>
 
       <div className='name'>
-        <p>To-Do App</p>
+        <p>Ever Earlier App</p>
       </div>
 
     </div>
