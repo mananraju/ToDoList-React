@@ -1,199 +1,259 @@
-import React, { useState, useEffect, useRef } from "react";
-import "./App.css";
+// App.js
+import React , {useState,useEffect}from 'react';
+import './App.css';
 
-const initialSessionCount = 4;
-const defaultPomodoroDuration = 25 * 60; // Default Pomodoro duration (25 minutes in seconds)
-const defaultBreakDuration = 5 * 60; // Default break duration (5 minutes in seconds)
+const TodoList = () => {
+  const [task, setTask] = React.useState('');
+  const [tasks, setTasks] = React.useState([]);
+  const [completedTasks, setCompletedTasks] = React.useState([]);
 
-function App() {
-  const [taskName, setTaskName] = useState("");
-  const [taskList, setTaskList] = useState([]);
-  const [sessionCount, setSessionCount] = useState(initialSessionCount);
-  const [pomodoroDuration, setPomodoroDuration] = useState(defaultPomodoroDuration);
-  const [breakDuration, setBreakDuration] = useState(defaultBreakDuration);
-  const [time, setTime] = useState(defaultPomodoroDuration);
-  const [isRunning, setIsRunning] = useState(false);
-  const [isSession, setIsSession] = useState(true);
-  const [startedTaskIndex, setStartedTaskIndex] = useState(-1);
-
-  const startButtonRef = useRef();
-
-  useEffect(() => {
-    let interval;
-
-    if (isRunning && time > 0) {
-      interval = setInterval(() => {
-        setTime((prevTime) => prevTime - 1);
-      }, 1000);
-    } else if (time === 0) {
-      // Timer has completed a session or break
-      // If there are remaining sessions, continue with the next one
-      if (isSession) {
-        // If it was a session, switch to the break duration
-        setIsSession(false);
-        setTime(breakDuration);
-      } else if (sessionCount > 1) {
-        setIsSession(true);
-        setSessionCount((prevCount) => prevCount - 1);
-        setTime(pomodoroDuration);
-      } else {
-        // All sessions completed, reset the timer
-        setTime(pomodoroDuration);
-        setIsRunning(false);
-        setIsSession(true);
-        setSessionCount(initialSessionCount);
-        setStartedTaskIndex(-1);
-      }
-    }
-
-    return () => clearInterval(interval);
-  }, [isRunning, time, pomodoroDuration, breakDuration, sessionCount, isSession]);
-
-  const handleStart = () => {
-    setIsRunning(true);
-  };
-
-  const handlePause = () => {
-    setIsRunning(false);
-  };
-
-  const handleReset = () => {
-    setTime(pomodoroDuration);
-    setIsRunning(false);
-    setIsSession(true);
-    setSessionCount(initialSessionCount);
-    setStartedTaskIndex(-1);
-  };
-
-  const handleTaskNameChange = (event) => {
-    setTaskName(event.target.value);
+  const handleChange = (event) => {
+    setTask(event.target.value);
   };
 
   const handleAddTask = () => {
-    if (taskName.trim() !== "") {
-      setTaskList([...taskList, { name: taskName, completed: false }]);
-      setTaskName("");
+    if (task.trim() !== '') {
+      setTasks([...tasks, { text: task, isEditable: false, isCompleted: false }]);
+      setTask('');
     }
   };
 
-  const handleCompleteTask = (index) => {
-    const updatedTaskList = taskList.map((task, i) =>
-      i === index ? { ...task, completed: true } : task
-    );
-    setTaskList(updatedTaskList);
+  const handleEdit = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[index].isEditable = true;
+    setTasks(updatedTasks);
   };
 
-  const handleDeleteTask = (index) => {
-    const updatedTaskList = taskList.filter((_, i) => i !== index);
-    setTaskList(updatedTaskList);
+  const handleSave = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[index].isEditable = false;
+    setTasks(updatedTasks);
   };
 
-  const handleStartTask = (index) => {
-    if (!isRunning) {
-      setTaskName(taskList[index].name);
-      handleReset();
-      setStartedTaskIndex(index);
-      handleStart(); // Start the main timer
+  const handleTaskChange = (event, index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[index].text = event.target.value;
+    setTasks(updatedTasks);
+  };
+
+  const handleDelete = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks.splice(index, 1);
+    setTasks(updatedTasks);
+  };
+
+  const handleToggleCompleted = (index) => {
+    const updatedTasks = [...tasks];
+    const completedTask = updatedTasks.splice(index, 1)[0];
+    setTasks(updatedTasks);
+    setCompletedTasks([...completedTasks, completedTask]);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleAddTask();
     }
-  };
-
-  const handleSessionChange = (event) => {
-    const newSessionCount = parseInt(event.target.value);
-    setSessionCount(newSessionCount);
-  };
-
-  const handlePomodoroDurationChange = (event) => {
-    const newDuration = parseInt(event.target.value) * 60;
-    setPomodoroDuration(newDuration);
-    setTime(newDuration);
-  };
-
-  const handleBreakDurationChange = (event) => {
-    const newDuration = parseInt(event.target.value) * 60;
-    setBreakDuration(newDuration);
-  };
-
-  const handleTaskSelection = (index) => {
-    if (!isRunning) {
-      setTaskName(taskList[index].name);
-      handleReset();
-      setStartedTaskIndex(index);
-      startButtonRef.current.click(); // Trigger automatic click of the "Start" button
-    }
-  };
-
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60).toString().padStart(2, "0");
-    const seconds = (timeInSeconds % 60).toString().padStart(2, "0");
-    return `${minutes}:${seconds}`;
   };
 
   return (
-    <div className="App">
+    <div>
+      <h1>Todo List</h1>
+      <input
+        type="text"
+        value={task}
+        onChange={handleChange}
+        onKeyPress={handleKeyPress}
+        placeholder="Add a task..."
+      />
+      <button onClick={handleAddTask}>Add Task</button>
+      <ul>
+        {tasks.map((taskObj, index) => (
+          <li key={index}>
+            <input
+              type="checkbox"
+              checked={taskObj.isCompleted}
+              onChange={() => handleToggleCompleted(index)}
+            />
+            {taskObj.isEditable ? (
+              <>
+                <input
+                  type="text"
+                  value={taskObj.text}
+                  onChange={(event) => handleTaskChange(event, index)}
+                />
+                <button onClick={() => handleSave(index)}>Save</button>
+              </>
+            ) : (
+              <>
+                {taskObj.text}
+                <button onClick={() => handleEdit(index)}>Edit</button>
+              </>
+            )}
+            <button onClick={() => handleDelete(index)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+      {completedTasks.length > 0 && (
+        <div>
+          <h2>Completed Tasks</h2>
+          <ul>
+            {completedTasks.map((completedTask, index) => (
+              <li key={index}>The task "{completedTask.text}" is completed.</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+
+
+
+
+//POMODORO
+
+
+
+const PomodoroTimer = () => {
+  const [task, setTask] = useState("");
+  const [sessionDuration, setSessionDuration] = useState(25); // in minutes
+  const [breakDuration, setBreakDuration] = useState(5); // in minutes
+  const [numSessions, setNumSessions] = useState(4); // number of sessions
+  const [currentSession, setCurrentSession] = useState(1);
+  const [time, setTime] = useState(sessionDuration * 60); // convert minutes to seconds
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    if (isRunning && time > 0) {
+      timer = setInterval(() => {
+        setTime((prevTime) => prevTime - 1);
+      }, 1000);
+    } else if (time === 0) {
+      // Timer finished, switch to break or next session
+      if (currentSession < numSessions) {
+        setCurrentSession((prevSession) => prevSession + 1);
+        setTime(breakDuration * 60);
+      } else {
+        // All sessions completed, reset timer and pause
+        resetTimer();
+        setCurrentSession(1);
+      }
+      setIsRunning(false);
+    }
+
+    return () => clearInterval(timer);
+  }, [isRunning, time, currentSession, numSessions, breakDuration]);
+
+  useEffect(() => {
+    // Update time whenever sessionDuration changes
+    if (!isRunning) {
+      setTime(sessionDuration * 60);
+    }
+  }, [sessionDuration, isRunning]);
+
+  const startTimer = () => {
+    setIsRunning(true);
+  };
+
+  const pauseTimer = () => {
+    setIsRunning(false);
+  };
+
+  const resetTimer = () => {
+    setTime(sessionDuration * 60);
+    setIsRunning(false);
+    setCurrentSession(1);
+    setTask(""); // Clear the task input when resetting the timer
+  };
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  return (
+    <div>
       <h1>Pomodoro Timer</h1>
-      <div className="task">
-        <input
-          type="text"
-          placeholder="Enter task name"
-          value={taskName}
-          onChange={handleTaskNameChange}
-        />
-        <button onClick={handleAddTask}>Add Task</button>
+      <div>
+        <label>
+          Task:
+          <input
+            type="text"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
+            disabled={isRunning && time > 0}
+          />
+        </label>
       </div>
-      <div className="task-list">
-        <ul>
-          {taskList.map((task, index) => (
-            <li key={index} onClick={() => handleTaskSelection(index)}>
-              {task.name}
-              {!task.completed ? (
-                <>
-                  {startedTaskIndex === index ? (
-                    <span className="started">Started</span>
-                  ) : (
-                    <button onClick={() => handleStartTask(index)}>Let's Go</button>
-                  )}
-                  <button onClick={() => handleCompleteTask(index)}>Complete</button>
-                  <button onClick={() => handleDeleteTask(index)}>Delete</button>
-                </>
-              ) : (
-                <span className="completed">Completed</span>
-              )}
-            </li>
-          ))}
-        </ul>
+      <div>
+        {currentSession}/{numSessions} - {formatTime(time)}
       </div>
-      <div className="timer">{formatTime(time)}</div>
-      <div className="controls">
-        {!isRunning ? (
-          <button onClick={handleStart} ref={startButtonRef}>Start</button>
-        ) : (
-          <button onClick={handlePause}>Pause</button>
-        )}
-        <button onClick={handleReset}>Reset</button>
+      {!isRunning ? (
+        <button onClick={startTimer}>Start</button>
+      ) : (
+        <button onClick={pauseTimer}>Pause</button>
+      )}
+      <button onClick={resetTimer}>Reset</button>
+
+      <div>
+        <label>
+          Session Duration (minutes):
+          <input
+            type="number"
+            value={sessionDuration}
+            onChange={(e) => setSessionDuration(Math.max(1, parseInt(e.target.value)))}
+            disabled={isRunning}
+          />
+        </label>
       </div>
-      <div className="settings">
-        <label>Number of Sessions:</label>
-        <input
-          type="number"
-          value={sessionCount}
-          min={1}
-          onChange={handleSessionChange}
-        />
-        <label>Pomodoro Duration (minutes):</label>
-        <input
-          type="number"
-          value={pomodoroDuration / 60}
-          min={1}
-          onChange={handlePomodoroDurationChange}
-        />
-        <label>Break Duration (minutes):</label>
-        <input
-          type="number"
-          value={breakDuration / 60}
-          min={1}
-          onChange={handleBreakDurationChange}
-        />
+      <div>
+        <label>
+          Break Duration (minutes):
+          <input
+            type="number"
+            value={breakDuration}
+            onChange={(e) => setBreakDuration(Math.max(1, parseInt(e.target.value)))}
+            disabled={isRunning}
+          />
+        </label>
       </div>
+      <div>
+        <label>
+          Number of Sessions:
+          <input
+            type="number"
+            value={numSessions}
+            onChange={(e) => setNumSessions(Math.max(1, parseInt(e.target.value)))}
+            disabled={isRunning}
+          />
+        </label>
+      </div>
+    </div>
+  );
+};
+
+
+
+
+
+
+
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <div className="container">
+          <div className="todo-list">
+            <TodoList />
+          </div>
+          <div className="pomodoro-timer">
+            <PomodoroTimer />
+          </div>
+        </div>
+      </header>
     </div>
   );
 }
