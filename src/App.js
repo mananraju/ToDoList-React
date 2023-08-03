@@ -93,9 +93,9 @@ function App() {
       setTaskName(taskList[index].name);
       handleReset();
       setStartedTaskIndex(index);
+      handleStart(); // Start the main timer
     }
   };
-  
 
   const handleSessionChange = (event) => {
     const newSessionCount = parseInt(event.target.value);
