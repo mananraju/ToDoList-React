@@ -1,259 +1,174 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
-//TODO LIST 
-
-// -------------------------------------------------------------
-
-const TodoList = () => {
-  const [task, setTask] = React.useState('');
-  const [tasks, setTasks] = React.useState([]);
-  const [completedTasks, setCompletedTasks] = React.useState([]);
-
-  const handleChange = (event) => {
-    setTask(event.target.value);
-  };
-
-  const handleAddTask = () => {
-    if (task.trim() !== '') {
-      setTasks([...tasks, { text: task, isEditable: false, isCompleted: false }]);
-      setTask('');
-    }
-  };
-
-  const handleEdit = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].isEditable = true;
-    setTasks(updatedTasks);
-  };
-
-  const handleSave = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].isEditable = false;
-    setTasks(updatedTasks);
-  };
-
-  const handleTaskChange = (event, index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].text = event.target.value;
-    setTasks(updatedTasks);
-  };
-
-  const handleDelete = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks.splice(index, 1);
-    setTasks(updatedTasks);
-  };
-
-  const handleToggleCompleted = (index) => {
-    const updatedTasks = [...tasks];
-    const completedTask = updatedTasks.splice(index, 1)[0];
-    setTasks(updatedTasks);
-    setCompletedTasks([...completedTasks, completedTask]);
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      handleAddTask();
-    }
-  };
-
-// ----------------------------------------------------------------
-
-  return (
-    <div>
-      <h1>Todo List</h1>
-      <input
-        type="text"
-        value={task}
-        onChange={handleChange}
-        onKeyPress={handleKeyPress}
-        placeholder="Add a task..."
-      />
-      <button onClick={handleAddTask}>Add Task</button>
-      <ul>
-        {tasks.map((taskObj, index) => (
-          <li key={index}>
-            <input
-              type="checkbox"
-              checked={taskObj.isCompleted}
-              onChange={() => handleToggleCompleted(index)}
-            />
-            {taskObj.isEditable ? (
-              <>
-                <input
-                  type="text"
-                  value={taskObj.text}
-                  onChange={(event) => handleTaskChange(event, index)}
-                />
-                <button onClick={() => handleSave(index)}>Save</button>
-              </>
-            ) : (
-              <>
-                {taskObj.text}
-                <button onClick={() => handleEdit(index)}>Edit</button>
-              </>
-            )}
-            <button onClick={() => handleDelete(index)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-      {completedTasks.length > 0 && (
-        <div>
-          <h2>Completed Tasks</h2>
-          <ul>
-            {completedTasks.map((completedTask, index) => (
-              <li key={index}>The  "{completedTask.text}" is completed!!!</li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// ------------------------------------------------------------------------------
-
-
-
-
-
-//POMODORO IIMER
-
 const PomodoroTimer = () => {
-  const [sessionLength, setSessionLength] = React.useState(25); 
-  // Session length in minutes
 
-  const [numOfSessions, setNumOfSessions] = React.useState(4); 
-  // Number of sessions before long break
+  const [activeTaskMessage, setActiveTaskMessage] = useState("");
 
-  const [breakLength, setBreakLength] = React.useState(5);
-  // Break duration in minutes
+  const [sessionLength, setSessionLength] = useState(25);
+  const [numOfSessions, setNumOfSessions] = useState(4);
+  const [breakLength, setBreakLength] = useState(5);
+  const [timeLeft, setTimeLeft] = useState(sessionLength * 60);
+  const [isRunning, setIsRunning] = useState(false);
+  const [currentSession, setCurrentSession] = useState(1);
 
-  const [timeLeft, setTimeLeft] = React.useState(sessionLength * 60); 
-  // Time in seconds (converted from minutes)
+  const [taskName, setTaskName] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [activeTaskIndex, setActiveTaskIndex] = useState(null);
 
-  const [isRunning, setIsRunning] = React.useState(false);
-  const [currentSession, setCurrentSession] = React.useState(1);
+  useEffect(() => {
+    if (isRunning && timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (timeLeft === 0 && isRunning) {
+      handleNextSession();
+    }
+  }, [isRunning, timeLeft]);
 
-  const [taskName, setTaskName] = React.useState("");// Task name field
-  const [isTaskRunning, setIsTaskRunning] = React.useState(false);// Task status
+  const handleNextSession = () => {
+    if (numOfSessions > 1) {
+      setCurrentSession(currentSession + 1);
+      setNumOfSessions(numOfSessions - 1);
+      setTimeLeft(breakLength * 60);
+    } else {
+      setCurrentSession(1);
+      setNumOfSessions(4);
+      setTimeLeft(sessionLength * 60);
+    }
+    setIsRunning(false);
+  };
 
-// -------------------------------------------------------------------------
-
-  // Ensuring minimum value of 1 for session length, number of sessions, and break duration
   const handleSessionLengthChange = (value) => {
     setSessionLength(Math.max(value, 1));
-  };
-
-  const handleNumOfSessionsChange = (value) => {
-    setNumOfSessions(Math.max(value, 1));
+    if (!isRunning && currentSession === 1) {
+      setTimeLeft(value * 60);
+    }
   };
 
   const handleBreakLengthChange = (value) => {
     setBreakLength(Math.max(value, 1));
+    if (!isRunning && currentSession !== 1) {
+      setTimeLeft(value * 60);
+    }
   };
 
-// -------------------------------------------------------------------------
+  const startTimer = () => {
+    setIsRunning(true);
+  };
 
-  // Function to format time in MM:SS format
+  const pauseTimer = () => {
+    setIsRunning(false);
+  };
+
+  const resetTimer = () => {
+    setIsRunning(false);
+    setCurrentSession(1);
+    setNumOfSessions(4);
+    setTimeLeft(sessionLength * 60);
+  };
+
+  const addTask = () => {
+    if (taskName.trim() !== "") {
+      setTasks([...tasks, { name: taskName.trim(), isRunning: false }]);
+      setTaskName("");
+    }
+  };
+
+  const handleStartTask = (index) => {
+    if (!isRunning) {
+      const updatedTasks = tasks.map((task, i) =>
+        i === index ? { ...task, isRunning: true } : { ...task, isRunning: false }
+      );
+      setTasks(updatedTasks);
+      setActiveTaskIndex(index);
+      setIsRunning(true);
+      setActiveTaskMessage(`Task: ${tasks[index].name} started`);
+    }
+  };
+
+  const finishTask = () => {
+    setIsRunning(false);
+    setActiveTaskIndex(null);
+    setTasks(tasks.map((task) => ({ ...task, isRunning: false })));
+    setActiveTaskMessage(`Task: ${tasks[activeTaskIndex].name} completed`);
+
+    // Reset the timer
+    setCurrentSession(1);
+    setNumOfSessions(4);
+    setTimeLeft(sessionLength * 60);
+  };
+
+
+  const handleDeleteTask = (index) => {
+    const updatedTasks = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTasks);
+  };
+
+
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  // Function to handle the timer countdown
-  useEffect(() => {
-    let timer;
-    if (isRunning && timeLeft > 0) {
-      timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-    } else if (timeLeft === 0 && isRunning) {
-      // Switch to the next session or break
-      if (numOfSessions > 1) {
-        setCurrentSession(currentSession + 1);
-        setNumOfSessions(numOfSessions - 1);
-        setTimeLeft(breakLength * 60);
-      } else {
-        setCurrentSession(1); // Reset session number after break
-        setNumOfSessions(4); // Reset sessions count after break
-        setTimeLeft(sessionLength * 60);
-      }
-    }
-    return () => clearTimeout(timer);
-  }, [isRunning, timeLeft, sessionLength, breakLength, numOfSessions, currentSession]);
-
-// -------------------------------------------------------------------------
-
-  // Function to start the timer
-  const startTimer = () => {
-    setIsRunning(true);
-  };
-
-  // Function to pause the timer
-  const pauseTimer = () => {
-    setIsRunning(false);
-  };
-
-  // Function to reset the timer
-  const resetTimer = () => {
-    setIsRunning(false);
-    setNumOfSessions(4);
-    setTimeLeft(sessionLength * 60);
-  };
-
-  // Function to start the task
-  const startTask = () => {
-    if (taskName.trim() !== "") {
-      setIsRunning(true);
-      setIsTaskRunning(true);
-    }
-  };
-
-  // Function to finish the task
-  const finishTask = () => {
-    setIsRunning(false);
-    setIsTaskRunning(false);
-    setTaskName("");
-  };
-
-// -----------------------------------------------------------------------------
-
   return (
     <div className="pomodoro-timer-container">
-
-{/* ------------------------------------------------------------------------- */}
-
+       <h1>ToDo App with Pomodoro Timer</h1> {/* Heading at the top */}
       <div className="pomodoro-task">
-        {!isTaskRunning && (
-          <input
-            type="text"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-            placeholder="Enter task name"
-            disabled={isRunning}
-          />
-        )}
-        {isTaskRunning && <div className="pomodoro-task-name">Task: {taskName}</div>}
-        {isTaskRunning ? (
-          <button className="pomodoro-timer-button" onClick={finishTask}>
-            Finish Task
-          </button>
-        ) : (
-          <button className="pomodoro-timer-button" onClick={startTask} disabled={isRunning || taskName.trim() === ""}>
-            Start Task
-          </button>
+        <input
+          type="text"
+          value={taskName}
+          onChange={(e) => setTaskName(e.target.value)}
+          placeholder="Enter task name"
+          disabled={isRunning}
+        />
+        <button
+          className="pomodoro-timer-button"
+          onClick={addTask}
+          disabled={isRunning || taskName.trim() === ""}
+        >
+          Add Task
+        </button>
+        {tasks.length > 0 && (
+          <div className="task-list">
+            <h3>Task List:</h3>
+            <ul>
+              {tasks.map((task, index) => (
+                <li key={index} className={activeTaskIndex === index ? "active-task" : ""}>
+                  {task.name}
+                  {task.isRunning ? (
+                    <button className="pomodoro-timer-button" onClick={finishTask}>
+                      Finish
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        className="pomodoro-timer-button"
+                        onClick={() => handleStartTask(index)}
+                        disabled={isRunning}
+                      >
+                        Start Task
+                      </button>
+                      <button
+                        className="pomodoro-timer-button"
+                        onClick={() => handleDeleteTask(index)}
+                        disabled={isRunning}
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
       </div>
-
-{/* ------------------------------------------------------------------------- */}
       <div className="pomodoro-timer">
         <div className="pomodoro-timer-clock">{formatTime(timeLeft)}</div>
         <div className="pomodoro-timer-label">Pomodoro Timer</div>
         <div className="pomodoro-timer-session">{`${currentSession}/${numOfSessions}`}</div>
       </div>
-
-{/* ------------------------------------------------------------------------*/}  
       <div className="pomodoro-timer-controls">
         {isRunning ? (
           <button className="pomodoro-timer-button" onClick={pauseTimer}>
@@ -268,8 +183,6 @@ const PomodoroTimer = () => {
           Reset
         </button>
       </div>
-
-{/* ------------------------------------------------------------------------- */}
       <div className="pomodoro-timer-settings">
         <label>
           Session Length (minutes):
@@ -287,22 +200,13 @@ const PomodoroTimer = () => {
             onChange={(e) => handleBreakLengthChange(Number(e.target.value))}
           />
         </label>
-        <label>
-          Number of Sessions:
-          <input
-            type="number"
-            value={numOfSessions}
-            onChange={(e) => handleNumOfSessionsChange(Number(e.target.value))}
-          />
-        </label>
       </div>
-{/* ------------------------------------------------------------------------- */}
+
+      {activeTaskMessage && <div className="task-message">{activeTaskMessage}</div>}
+
     </div>
   );
 };
-
-
-
 
 function App() {
   return (
@@ -310,21 +214,16 @@ function App() {
       <div className="App">
         <header className="App-header">
           <div className="container">
-            <div className="todo-list">
-              <TodoList />
-            </div>
             <div className="pomodoro-timer">
               <PomodoroTimer />
             </div>
           </div>
         </header>
       </div>
-
-    <div className="Copyright">
-      <p>Copyright &copy; 2023, Mr.Rana. All Rights Reserved.</p>
+      <div className="Copyright">
+        <p>Copyright &copy; All Rights Reserved | App by Mr.Rana</p>
+      </div>
     </div>
-    </div>
-
   );
 }
 
