@@ -92,7 +92,7 @@ const PomodoroTimer = () => {
     setTasks(updatedTasks);
     setActiveTaskIndex(null);
     setActiveTaskMessage(`Task: ${finishedTask.name} completed`);
-  
+
     // Reset the timer
     setIsRunning(false);
     setCurrentSession(1);
@@ -112,105 +112,111 @@ const PomodoroTimer = () => {
   };
 
   return (
-    <div className="main-container">
-      <div className="pomodoro-task-container">
-        <h1>ToDo App with Pomodoro Timer</h1>
-        <input
-          type="text"
-          value={taskName}
-          onChange={(e) => setTaskName(e.target.value)}
-          placeholder="Enter task name"
-          disabled={isRunning}
-        />
-        <button
-          className="pomodoro-timer-button"
-          onClick={addTask}
-          disabled={isRunning || taskName.trim() === ""}
-        >
-          Add Task
-        </button>
-        {tasks.length > 0 && (
-          <div className="task-list">
-            <h3>Task List:</h3>
-            <ul>
-              {tasks.map((task, index) => (
-                <li key={index} className={activeTaskIndex === index ? "active-task" : ""}>
-                  {task.name}
-                  {task.isRunning ? (
-                    <button className="pomodoro-timer-button" onClick={finishTask}>
-                      Finish
-                    </button>
-                  ) : (
-                    <>
-                      <button
-                        className="pomodoro-timer-button"
-                        onClick={() => handleStartTask(index)}
-                        disabled={isRunning}
-                      >
-                        Start Task
-                      </button>
-                      <button
-                        className="pomodoro-timer-button"
-                        onClick={() => handleDeleteTask(index)}
-                        disabled={isRunning}
-                      >
-                        Delete
-                      </button>
-                    </>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-
-      <div className="pomodoro-timer-container">
-        <div className="pomodoro-timer">
-          <div className="pomodoro-timer-clock">{formatTime(timeLeft)}</div>
-          <div className="pomodoro-timer-label">
-            {currentSession === 1 ? "Work Time" : "Break Time"}
-          </div>
-          <div className="pomodoro-timer-session">{`${currentSession}/${numOfSessions}`}</div>
-        </div>
-        <div className="pomodoro-timer-controls">
-          {isRunning ? (
-            <button className="pomodoro-timer-button" onClick={pauseTimer}>
-              Pause
-            </button>
-          ) : (
-            <button className="pomodoro-timer-button" onClick={startTimer}>
-              Start
-            </button>
-          )}
-          <button className="pomodoro-timer-button" onClick={resetTimer}>
-            Reset
+    <>
+      <h1>ToDo App with Pomodoro Timer</h1>
+      <div className="main-container">
+        <div className="pomodoro-task-container">
+        <h1>ToDo List</h1>
+          <input
+            type="text"
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
+            placeholder="Enter task name"
+            disabled={isRunning}
+          />
+          <button
+            className="pomodoro-timer-button"
+            onClick={addTask}
+            disabled={isRunning || taskName.trim() === ""}
+          >
+            Add Task
           </button>
+          {tasks.length > 0 && (
+            <div className="task-list">
+              <h3>Task List:</h3>
+              <ul>
+                {tasks.map((task, index) => (
+                  <li key={index} className={activeTaskIndex === index ? "active-task" : ""}>
+                    {task.name}
+                    {task.isRunning ? (
+                      <button className="pomodoro-timer-button" onClick={finishTask}>
+                        Finish
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          className="pomodoro-timer-button"
+                          onClick={() => handleStartTask(index)}
+                          disabled={isRunning}
+                        >
+                          Start Task
+                        </button>
+                        <button
+                          className="pomodoro-timer-button"
+                          onClick={() => handleDeleteTask(index)}
+                          disabled={isRunning}
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
-        <div className="pomodoro-timer-settings">
-          <label>
-            Session Length (minutes):
-            <input
-              type="number"
-              value={sessionLength}
-              onChange={(e) => handleSessionLengthChange(Number(e.target.value))}
-            />
-          </label>
-          <label>
-            Break Length (minutes):
-            <input
-              type="number"
-              value={breakLength}
-              onChange={(e) => handleBreakLengthChange(Number(e.target.value))}
-            />
-          </label>
+
+        <div className="pomodoro-timer-container">
+        <h1>Pomodoro Timer</h1>
+          <div className="pomodoro-timer">
+            <div className="pomodoro-timer-clock">{formatTime(timeLeft)}</div>
+            <div className="pomodoro-timer-label">
+              {currentSession === 1 ? "Work Time" : "Break Time"}
+            </div>
+            <div className="pomodoro-timer-session">{`${currentSession}/${numOfSessions}`}</div>
+          </div>
+          <div className="pomodoro-timer-controls">
+            {isRunning ? (
+              <button className="pomodoro-timer-button" onClick={pauseTimer}>
+                Pause
+              </button>
+            ) : (
+              <button className="pomodoro-timer-button" onClick={startTimer}>
+                Start
+              </button>
+            )}
+            <button className="pomodoro-timer-button" onClick={resetTimer}>
+              Reset
+            </button>
+          </div>
+          <div className="pomodoro-timer-settings">
+            <label>
+              Session Length (minutes):
+              <input
+                type="number"
+                value={sessionLength}
+                onChange={(e) => handleSessionLengthChange(Number(e.target.value))}
+              />
+            </label>
+            <label>
+              Break Length (minutes):
+              <input
+                type="number"
+                value={breakLength}
+                onChange={(e) => handleBreakLengthChange(Number(e.target.value))}
+              />
+            </label>
+          </div>
+        </div>
+
+        <div className="task-status-container">
+        <h1>Task Status</h1>
+          {activeTaskMessage && <div className="task-message">{activeTaskMessage}</div>}
         </div>
       </div>
 
-      <div className="task-status-container">
-        {activeTaskMessage && <div className="task-message">{activeTaskMessage}</div>}
-      </div>
-    </div>
+    </>
   );
 };
 
