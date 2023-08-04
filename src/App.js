@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 
 //TODO LIST 
@@ -121,23 +121,23 @@ const TodoList = () => {
 //POMODORO IIMER
 
 const PomodoroTimer = () => {
-  const [sessionLength, setSessionLength] = useState(25); 
+  const [sessionLength, setSessionLength] = React.useState(25); 
   // Session length in minutes
 
-  const [numOfSessions, setNumOfSessions] = useState(4); 
+  const [numOfSessions, setNumOfSessions] = React.useState(4); 
   // Number of sessions before long break
 
-  const [breakLength, setBreakLength] = useState(5);
+  const [breakLength, setBreakLength] = React.useState(5);
   // Break duration in minutes
 
-  const [timeLeft, setTimeLeft] = useState(sessionLength * 60); 
+  const [timeLeft, setTimeLeft] = React.useState(sessionLength * 60); 
   // Time in seconds (converted from minutes)
 
-  const [isRunning, setIsRunning] = useState(false);
-  const [currentSession, setCurrentSession] = useState(1);
+  const [isRunning, setIsRunning] = React.useState(false);
+  const [currentSession, setCurrentSession] = React.useState(1);
 
-  const [taskName, setTaskName] = useState("");// Task name field
-  const [isTaskRunning, setIsTaskRunning] = useState(false);// Task status
+  const [taskName, setTaskName] = React.useState("");// Task name field
+  const [isTaskRunning, setIsTaskRunning] = React.useState(false);// Task status
 
 // -------------------------------------------------------------------------
 
@@ -175,8 +175,8 @@ const PomodoroTimer = () => {
         setNumOfSessions(numOfSessions - 1);
         setTimeLeft(breakLength * 60);
       } else {
-        setCurrentSession(1); // Reset session number after long break
-        setNumOfSessions(4); // Reset sessions count after long break
+        setCurrentSession(1); // Reset session number after break
+        setNumOfSessions(4); // Reset sessions count after break
         setTimeLeft(sessionLength * 60);
       }
     }
