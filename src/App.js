@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 //TODO LIST 
+
+// -------------------------------------------------------------
+
 const TodoList = () => {
   const [task, setTask] = React.useState('');
   const [tasks, setTasks] = React.useState([]);
@@ -55,6 +58,8 @@ const TodoList = () => {
     }
   };
 
+// ----------------------------------------------------------------
+
   return (
     <div>
       <h1>Todo List</h1>
@@ -98,7 +103,7 @@ const TodoList = () => {
           <h2>Completed Tasks</h2>
           <ul>
             {completedTasks.map((completedTask, index) => (
-              <li key={index}>The task "{completedTask.text}" is completed.</li>
+              <li key={index}>The  "{completedTask.text}" is completed!!!</li>
             ))}
           </ul>
         </div>
@@ -107,24 +112,34 @@ const TodoList = () => {
   );
 };
 
+// ------------------------------------------------------------------------------
 
 
 
 
-//POMODORO
 
+//POMODORO IIMER
 
 const PomodoroTimer = () => {
-  const [sessionLength, setSessionLength] = useState(25); // Session length in minutes
-  const [numOfSessions, setNumOfSessions] = useState(4); // Number of sessions before long break
-  const [breakLength, setBreakLength] = useState(5); // Break duration in minutes
+  const [sessionLength, setSessionLength] = useState(25); 
+  // Session length in minutes
 
-  const [timeLeft, setTimeLeft] = useState(sessionLength * 60); // Time in seconds (converted from minutes)
+  const [numOfSessions, setNumOfSessions] = useState(4); 
+  // Number of sessions before long break
+
+  const [breakLength, setBreakLength] = useState(5);
+  // Break duration in minutes
+
+  const [timeLeft, setTimeLeft] = useState(sessionLength * 60); 
+  // Time in seconds (converted from minutes)
+
   const [isRunning, setIsRunning] = useState(false);
   const [currentSession, setCurrentSession] = useState(1);
 
-  const [taskName, setTaskName] = useState(""); // Task name field
-  const [isTaskRunning, setIsTaskRunning] = useState(false); // Task status
+  const [taskName, setTaskName] = useState("");// Task name field
+  const [isTaskRunning, setIsTaskRunning] = useState(false);// Task status
+
+// -------------------------------------------------------------------------
 
   // Ensuring minimum value of 1 for session length, number of sessions, and break duration
   const handleSessionLengthChange = (value) => {
@@ -139,6 +154,7 @@ const PomodoroTimer = () => {
     setBreakLength(Math.max(value, 1));
   };
 
+// -------------------------------------------------------------------------
 
   // Function to format time in MM:SS format
   const formatTime = (time) => {
@@ -166,6 +182,8 @@ const PomodoroTimer = () => {
     }
     return () => clearTimeout(timer);
   }, [isRunning, timeLeft, sessionLength, breakLength, numOfSessions, currentSession]);
+
+// -------------------------------------------------------------------------
 
   // Function to start the timer
   const startTimer = () => {
@@ -199,8 +217,12 @@ const PomodoroTimer = () => {
     setTaskName("");
   };
 
+// -----------------------------------------------------------------------------
+
   return (
     <div className="pomodoro-timer-container">
+
+{/* ------------------------------------------------------------------------- */}
 
       <div className="pomodoro-task">
         {!isTaskRunning && (
@@ -224,12 +246,14 @@ const PomodoroTimer = () => {
         )}
       </div>
 
-
+{/* ------------------------------------------------------------------------- */}
       <div className="pomodoro-timer">
         <div className="pomodoro-timer-clock">{formatTime(timeLeft)}</div>
         <div className="pomodoro-timer-label">Pomodoro Timer</div>
         <div className="pomodoro-timer-session">{`${currentSession}/${numOfSessions}`}</div>
       </div>
+
+{/* ------------------------------------------------------------------------*/}  
       <div className="pomodoro-timer-controls">
         {isRunning ? (
           <button className="pomodoro-timer-button" onClick={pauseTimer}>
@@ -244,6 +268,8 @@ const PomodoroTimer = () => {
           Reset
         </button>
       </div>
+
+{/* ------------------------------------------------------------------------- */}
       <div className="pomodoro-timer-settings">
         <label>
           Session Length (minutes):
@@ -270,16 +296,10 @@ const PomodoroTimer = () => {
           />
         </label>
       </div>
+{/* ------------------------------------------------------------------------- */}
     </div>
   );
 };
-
-
-
-
-
-
-
 
 
 
