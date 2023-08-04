@@ -1,7 +1,7 @@
-// App.js
 import React , {useState,useEffect}from 'react';
 import './App.css';
 
+//TODO LIST 
 const TodoList = () => {
   const [task, setTask] = React.useState('');
   const [tasks, setTasks] = React.useState([]);
@@ -110,8 +110,8 @@ const TodoList = () => {
 
 
 
-//POMODORO
 
+//POMODORO
 
 
 const PomodoroTimer = () => {
