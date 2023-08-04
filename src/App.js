@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 const PomodoroTimer = () => {
-
   const [activeTaskMessage, setActiveTaskMessage] = useState("");
-
   const [sessionLength, setSessionLength] = useState(25);
   const [numOfSessions, setNumOfSessions] = useState(4);
   const [breakLength, setBreakLength] = useState(5);
   const [timeLeft, setTimeLeft] = useState(sessionLength * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [currentSession, setCurrentSession] = useState(1);
-
   const [taskName, setTaskName] = useState("");
   const [tasks, setTasks] = useState([]);
   const [activeTaskIndex, setActiveTaskIndex] = useState(null);
@@ -29,8 +26,10 @@ const PomodoroTimer = () => {
     if (numOfSessions > 1) {
       setCurrentSession(currentSession + 1);
       setNumOfSessions(numOfSessions - 1);
+      setActiveTaskMessage("Break time!");
       setTimeLeft(breakLength * 60);
     } else {
+      setActiveTaskMessage("All sessions completed. Well done!");
       setCurrentSession(1);
       setNumOfSessions(4);
       setTimeLeft(sessionLength * 60);
@@ -98,12 +97,10 @@ const PomodoroTimer = () => {
     setTimeLeft(sessionLength * 60);
   };
 
-
   const handleDeleteTask = (index) => {
     const updatedTasks = tasks.filter((_, i) => i !== index);
     setTasks(updatedTasks);
   };
-
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -113,7 +110,7 @@ const PomodoroTimer = () => {
 
   return (
     <div className="pomodoro-timer-container">
-       <h1>ToDo App with Pomodoro Timer</h1> {/* Heading at the top */}
+      <h1>ToDo App with Pomodoro Timer</h1>
       <div className="pomodoro-task">
         <input
           type="text"
@@ -166,7 +163,9 @@ const PomodoroTimer = () => {
       </div>
       <div className="pomodoro-timer">
         <div className="pomodoro-timer-clock">{formatTime(timeLeft)}</div>
-        <div className="pomodoro-timer-label">Pomodoro Timer</div>
+        <div className="pomodoro-timer-label">
+          {currentSession === 1 ? "Work Time" : "Break Time"}
+        </div>
         <div className="pomodoro-timer-session">{`${currentSession}/${numOfSessions}`}</div>
       </div>
       <div className="pomodoro-timer-controls">
@@ -201,9 +200,7 @@ const PomodoroTimer = () => {
           />
         </label>
       </div>
-
       {activeTaskMessage && <div className="task-message">{activeTaskMessage}</div>}
-
     </div>
   );
 };
