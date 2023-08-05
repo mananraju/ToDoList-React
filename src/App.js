@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 
 const PomodoroTimer = () => {
-  const [taskName, setTaskName] = useState("");
-  const [tasks, setTasks] = useState([]);
-  const [activeTaskIndex, setActiveTaskIndex] = useState(null);
+  // React.useState for the Task
+  const [taskName, setTaskName] = React.useState("");
+  const [tasks, setTasks] = React.useState([]);
+  const [activeTaskIndex, setActiveTaskIndex] = React.useState(null);
 
-  const [activeTaskMessage, setActiveTaskMessage] = useState('');
-  const [timeLeft, setTimeLeft] = useState(1500); // 1500 seconds = 25 minutes (default session length)
-  const [currentSession, setCurrentSession] = useState(1);
-  const [numOfSessions, setNumOfSessions] = useState(4);
-  const [isRunning, setIsRunning] = useState(false);
-  const [sessionLength, setSessionLength] = useState(25); // 25 minutes (default session length)
-  const [breakLength, setBreakLength] = useState(5); // 5 minutes (default break length)
+  // React.useState for the Task
+  const [activeTaskMessage, setActiveTaskMessage] = React.useState('');
+  const [timeLeft, setTimeLeft] = React.useState(1500); // 1500 seconds = 25 minutes (default session length)
+  const [currentSession, setCurrentSession] = React.useState(1);
+  const [numOfSessions, setNumOfSessions] = React.useState(4);
+  const [isRunning, setIsRunning] = React.useState(false);
+  const [sessionLength, setSessionLength] = React.useState(25); // 25 minutes (default session length)
+  const [breakLength, setBreakLength] = React.useState(5); // 5 minutes (default break length)
 
+// ----------------------------------------------------------------
 
    // Function to handle timer tick
   useEffect(() => {
@@ -27,7 +30,7 @@ const PomodoroTimer = () => {
       setIsRunning(false);
       if (currentSession < numOfSessions) {
         // Start the break
-        setActiveTaskMessage('Break time! Take a rest.');
+        setActiveTaskMessage('Thoda Rest Kar Lijiye, Warna Rest in Pease Ho Jaoge!!!');
         setCurrentSession((prevSession) => prevSession + 1);
         setTimeLeft(breakLength * 60);
       } else {
@@ -38,12 +41,16 @@ const PomodoroTimer = () => {
       }
     }
 
-    // Clean up the timer when component unmounts or timer is paused
+  // Clean up the timer when component unmounts or timer is paused
     return () => clearInterval(timer);
   }, [isRunning, timeLeft, currentSession, numOfSessions, breakLength, sessionLength]);
 
-
-  
+// ----------------------------------------------------------------
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
 
   const pauseTimer = () => {
     setIsRunning(false);
@@ -71,7 +78,7 @@ const PomodoroTimer = () => {
     setBreakLength(value);
   };
 
-
+// ----------------------------------------------------------------
   const addTask = () => {
     if (taskName.trim() !== "") {
       setTasks([...tasks, { name: taskName.trim(), isRunning: false }]);
@@ -111,16 +118,14 @@ const PomodoroTimer = () => {
     setTasks(updatedTasks);
   };
 
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-  };
+// ----------------------------------------------------------------
 
   return (
     <>
       <h1>ToDo App with Pomodoro Timer</h1>
       <div className="main-container">
+
+{/* ---------------------------------------------------------------- */}
 
         <div className="pomodoro-task-container">
           <h3>ToDo List</h3>
@@ -176,6 +181,8 @@ const PomodoroTimer = () => {
           )}
         </div>
 
+{/* ---------------------------------------------------------------- */}
+
         <div className="pomodoro-timer-container">
       <h3>Pomodoro Timer</h3>
 
@@ -223,18 +230,22 @@ const PomodoroTimer = () => {
       </div>
     </div>
 
+    {/* ---------------------------------------------------------------- */}
+
       </div>
 
     </>
   );
 };
 
+
+
 function App() {
   return (
     <div>
       <PomodoroTimer />
       <div className="Footer">
-        <p>Copyright &copy; All Rights Reserved | App by Mr.Rana</p>
+        <p>Copyright &copy;2023,All Rights Reserved | App by Mr.Rana</p>
       </div>
     </div>
   );
