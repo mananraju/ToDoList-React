@@ -16,7 +16,7 @@ const PomodoroTimer = () => {
 
 
    // Function to handle timer tick
-   useEffect(() => {
+  useEffect(() => {
     let timer;
     if (isRunning && timeLeft > 0) {
       timer = setInterval(() => {
@@ -185,7 +185,7 @@ const PomodoroTimer = () => {
 
       <div className="pomodoro-timer">
         <div className="pomodoro-timer-clock">{formatTime(timeLeft)}</div>
-        <div className="pomodoro-timer-session">{`${currentSession}/${numOfSessions}`}</div>
+        <div className="pomodoro-timer-session">Session:{`${currentSession}/${numOfSessions}`}</div>
       </div>
 
       <div className="pomodoro-timer-controls">
