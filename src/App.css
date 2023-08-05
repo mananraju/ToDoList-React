@@ -1,3 +1,4 @@
+/* Base styles for all screen sizes */
 body {
   display: flex;
   justify-content: center;
@@ -12,7 +13,8 @@ h1 {
   text-align: center;
   margin-bottom: 30px;
 }
-h3{
+
+h3 {
   text-align: center;
 }
 
@@ -20,28 +22,22 @@ h3{
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
+  flex-wrap: wrap; /* Allow containers to wrap on smaller screens */
   max-width: 850px;
   background-color: red;
   padding: 20px;
   border-radius: 2%;
+  margin: 10px;
 }
 
 .pomodoro-task-container,
 .pomodoro-timer-container {
-  flex: 1;
+  flex: 1; /* Flexible width to allow containers to wrap */
+  min-width: 300px; /* Prevent containers from shrinking beyond 300px */
   padding: 20px;
   background-color: white;
   border-radius: 5px;
   margin: 10px;
-}
-
-.pomodoro-task-container {
-  min-width: 300px;
-}
-
-.pomodoro-timer-container {
-  min-width: 300px;
 }
 
 /* Add animation */
@@ -144,9 +140,7 @@ h3{
   background-color: #45a049;
 }
 
-
 /* Add styles for ToDo List */
-
 .task-list {
   margin-top: 20px;
 }
@@ -180,14 +174,13 @@ h3{
 }
 
 /* Add styles for Pomodoro Timer */
-
 .pomodoro-timer {
-  border-radius: 2%; 
-  background-color: red; /* This will set the background color to red */
+  border-radius: 2%;
+  background-color: red;
   padding: 20px;
   text-align: center;
-  position: relative; /* This is needed to place content inside the circle */
-  overflow: hidden; /* This ensures content stays within the circle */
+  position: relative;
+  overflow: hidden;
 }
 
 .pomodoro-timer-clock {
@@ -268,7 +261,26 @@ h3{
   padding: 10px;
   border-radius: 5px;
 }
-.Footer{
+
+/* Footer styles */
+.Footer {
   text-align: center;
   font-style: italic;
+}
+
+/* Media Queries for Responsiveness */
+
+/* For smaller screens */
+@media (max-width: 768px) {
+  .main-container {
+    max-width: 100%; /* Allow the container to take full width on small screens */
+  }
+  .pomodoro-task-container,
+  .pomodoro-timer-container {
+    min-width: 100%; /* Allow the containers to take full width on small screens */
+    margin: 5px;
+  }
+  .pomodoro-timer-controls {
+    flex-direction: column; /* Stack the controls vertically on small screens */
+  }
 }
