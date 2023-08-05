@@ -1,134 +1,269 @@
-/* App.css */
-
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #e74c3c; /* Red background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  max-width: 800px;
+  background-color: red;
+  padding: 20px;
+  border-radius: 2%;
+}
+
+.pomodoro-task-container,
+.pomodoro-timer-container {
+  flex: 1;
+  padding: 20px;
+  background-color: white;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.pomodoro-task-container {
+  min-width: 300px;
+}
+
+.pomodoro-timer-container {
+  min-width: 300px;
+}
+
+/* Add animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  .main-container {
-    display: flex;
-    justify-content: center; /* Center the components horizontally */
-    align-items: center; /* Center the components vertically */
-    padding: 20px;
+  to {
+    opacity: 1;
   }
-  
-  /* Styles for the Pomodoro Task Container */
-  .pomodoro-task-container,
-  .pomodoro-timer-container,
-  .task-status-container {
-    flex: 1;
-    margin: 10px; /* Add some space between the components */
-    padding: 20px;
-    background-color: #fff; /* White background */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Box shadow */
-  }
-  
-  .pomodoro-task-container h1 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #e74c3c;
-    margin-bottom: 15px;
-  }
-  
-  input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .task-list {
-    margin-top: 15px;
-  }
-  
-  .task-list h3 {
-    font-size: 20px;
-    color: #e74c3c;
-  }
-  
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  li {
-    font-size: 18px;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #e74c3c;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .active-task {
-    background-color: #e74c3c;
-    color: #fff;
-  }
-  
-  button.pomodoro-timer-button {
-    font-size: 14px;
-    padding: 6px 12px;
-    margin-left: 10px;
-    cursor: pointer;
-    background-color: #e74c3c;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-  }
-  
-  button.pomodoro-timer-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  /* Styles for the Pomodoro Timer Container */
-  .pomodoro-timer {
-    background-color: #e74c3c;
-    color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-  }
-  
-  .pomodoro-timer-clock {
-    font-size: 48px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .pomodoro-timer-label {
-    font-size: 24px;
-  }
-  
-  .pomodoro-timer-session {
-    font-size: 18px;
-    margin-top: 10px;
-  }
-  
-  .pomodoro-timer-controls {
-    margin-top: 20px;
-  }
-  
-  /* Styles for Task Status Container */
-  .task-message {
-    font-size: 18px;
-    color: #e74c3c;
-    font-weight: bold;
-    padding: 10px;
-    border: 1px solid #e74c3c;
-    border-radius: 4px;
-  }
-  
-  /* Styles for Copyright */
-  .Copyright {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-    color: #e74c3c;
-  }
-  
+}
+
+.task-list li {
+  animation: fadeIn 0.5s ease;
+}
+
+.pomodoro-timer {
+  text-align: center;
+  padding: 20px;
+}
+
+.pomodoro-timer-clock {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.pomodoro-timer-label {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.pomodoro-timer-session {
+  font-size: 16px;
+}
+
+.pomodoro-timer-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pomodoro-timer-controls button {
+  margin: 0 5px;
+}
+
+.PomodoroTimer button,
+.pomodoro-timer-settings label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.task-message {
+  font-size: 18px;
+  text-align: center;
+  margin: 10px 0;
+  color: white;
+  background-color: #222;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.task-list li.active-task {
+  background-color: #e0e0e0;
+}
+
+/* input task fieldset  */
+.pomodoro-task-container input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  margin-right: 10px;
+  color: #222;
+}
+
+.pomodoro-task-container .add-task-container {
+  display: flex;
+  align-items: center;
+}
+
+.pomodoro-timer-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+}
+
+.pomodoro-timer-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pomodoro-timer-button:hover {
+  background-color: #45a049;
+}
+
+
+/* Add styles for ToDo List */
+
+.task-list {
+  margin-top: 20px;
+}
+
+.task-list li {
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f0f0;
+}
+
+.task-list li.active-task {
+  background-color: #e0e0e0;
+}
+
+.task-list li button {
+  background-color: #ff7f50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.task-list li button:hover {
+  background-color: #ff6347;
+}
+
+/* Add styles for Pomodoro Timer */
+
+.pomodoro-timer {
+  border-radius: 2%; 
+  background-color: red; /* This will set the background color to red */
+  padding: 20px;
+  text-align: center;
+  position: relative; /* This is needed to place content inside the circle */
+  overflow: hidden; /* This ensures content stays within the circle */
+}
+
+.pomodoro-timer-clock {
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 7px;
+  color: #f1f1f1;
+}
+
+.pomodoro-timer-label {
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: #f1f1f1;
+}
+
+.pomodoro-timer-session {
+  font-size: 16px;
+  color: #f1f1f1;
+}
+
+.pomodoro-timer-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.pomodoro-timer-controls button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+}
+
+.pomodoro-timer-controls button:hover {
+  background-color: #45a049;
+}
+
+.pomodoro-timer-settings label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: #555;
+  margin-top: 15px;
+}
+
+.pomodoro-timer-settings input {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 16px;
+  color: #222;
+}
+
+.pomodoro-timer-settings input:focus {
+  outline: none;
+  border-color: #4caf50;
+}
+
+/* Add styles for task status container */
+.task-status-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Add styles for task message */
+.task-message {
+  font-size: 18px;
+  text-align: center;
+  margin: 10px 0;
+  color: white;
+  background-color: #222;
+  padding: 10px;
+  border-radius: 5px;
+}
+.Footer{
+  text-align: center;
+  font-style: italic;
+}
