@@ -7,7 +7,7 @@ const PomodoroTimer = () => {
   const [tasks, setTasks] = React.useState([]);
   const [activeTaskIndex, setActiveTaskIndex] = React.useState(null);
 
-  // React.useState for the Task
+  // React.useState for the Timer
   const [activeTaskMessage, setActiveTaskMessage] = React.useState('');
   const [timeLeft, setTimeLeft] = React.useState(1500); // 1500 seconds = 25 minutes (default session length)
   const [currentSession, setCurrentSession] = React.useState(1);
@@ -15,10 +15,12 @@ const PomodoroTimer = () => {
   const [isRunning, setIsRunning] = React.useState(false);
   const [sessionLength, setSessionLength] = React.useState(25); // 25 minutes (default session length)
   const [breakLength, setBreakLength] = React.useState(5); // 5 minutes (default break length)
+  const [showSettings, setShowSettings] = React.useState(false);
 
-// ----------------------------------------------------------------
 
-   // Function to handle timer tick
+  // ----------------------------------------------------------------
+
+  // Function to handle timer tick
   useEffect(() => {
     let timer;
     if (isRunning && timeLeft > 0) {
@@ -30,7 +32,7 @@ const PomodoroTimer = () => {
       setIsRunning(false);
       if (currentSession < numOfSessions) {
         // Start the break
-        setActiveTaskMessage('Thoda Rest Kar Lijiye, Warna Rest in Pease Ho Jaoge!!!');
+        setActiveTaskMessage('Relax!Take a Chill Pill...!!!');
         setCurrentSession((prevSession) => prevSession + 1);
         setTimeLeft(breakLength * 60);
       } else {
@@ -41,11 +43,11 @@ const PomodoroTimer = () => {
       }
     }
 
-  // Clean up the timer when component unmounts or timer is paused
+    // Clean up the timer when component unmounts or timer is paused
     return () => clearInterval(timer);
   }, [isRunning, timeLeft, currentSession, numOfSessions, breakLength, sessionLength]);
 
-// ----------------------------------------------------------------
+  // ----------------------------------------------------------------
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
@@ -78,7 +80,7 @@ const PomodoroTimer = () => {
     setBreakLength(value);
   };
 
-// ----------------------------------------------------------------
+  // ----------------------------------------------------------------
   const addTask = () => {
     if (taskName.trim() !== "") {
       setTasks([...tasks, { name: taskName.trim(), isRunning: false }]);
@@ -118,14 +120,14 @@ const PomodoroTimer = () => {
     setTasks(updatedTasks);
   };
 
-// ----------------------------------------------------------------
+  // ----------------------------------------------------------------
 
   return (
     <>
       <h1>ToDo App with Pomodoro Timer</h1>
       <div className="main-container">
 
-{/* ---------------------------------------------------------------- */}
+        {/* ---------------------------------------------------------------- */}
 
         <div className="pomodoro-task-container">
           <h3>ToDo List</h3>
@@ -181,56 +183,64 @@ const PomodoroTimer = () => {
           )}
         </div>
 
-{/* ---------------------------------------------------------------- */}
+        {/* ---------------------------------------------------------------- */}
 
         <div className="pomodoro-timer-container">
-      <h3>Pomodoro Timer</h3>
+          <h3>Pomodoro Timer</h3>
 
-      <div className="task-status-container">
-        {activeTaskMessage && <div className="task-message">{activeTaskMessage}</div>}
-      </div>
+          <div className="task-status-container">
+            {activeTaskMessage && <div className="task-message">{activeTaskMessage}</div>}
+          </div>
 
-      <div className="pomodoro-timer">
-        <div className="pomodoro-timer-clock">{formatTime(timeLeft)}</div>
-        <div className="pomodoro-timer-session">Session:{`${currentSession}/${numOfSessions}`}</div>
-      </div>
+          <div className="pomodoro-timer">
+            <div className="pomodoro-timer-clock">{formatTime(timeLeft)}</div>
+            <div className="pomodoro-timer-session">Session:{`${currentSession}/${numOfSessions}`}</div>
+          </div>
 
-      <div className="pomodoro-timer-controls">
-        {isRunning ? (
-          <button className="pomodoro-timer-button" onClick={pauseTimer}>
-            Pause
-          </button>
-        ) : (
-          <button className="pomodoro-timer-button" onClick={startTimer}>
-            Start
-          </button>
-        )}
-        <button className="pomodoro-timer-button" onClick={resetTimer}>
-          Reset
-        </button>
-      </div>
 
-      <div className="pomodoro-timer-settings">
-        <label>
-          Session Length (minutes):
-          <input
-            type="number"
-            value={sessionLength}
-            onChange={(e) => handleSessionLengthChange(Number(e.target.value))}
-          />
-        </label>
-        <label>
-          Break Length (minutes):
-          <input
-            type="number"
-            value={breakLength}
-            onChange={(e) => handleBreakLengthChange(Number(e.target.value))}
-          />
-        </label>
-      </div>
-    </div>
 
-    {/* ---------------------------------------------------------------- */}
+          <div className="pomodoro-timer-controls">
+            {isRunning ? (
+              <button className="pomodoro-timer-button" onClick={pauseTimer}>
+                Pause
+              </button>
+            ) : (
+              <button className="pomodoro-timer-button" onClick={startTimer}>
+                Start
+              </button>
+            )}
+            <button className="pomodoro-timer-button" onClick={resetTimer}>
+              Reset
+            </button>
+            <button className="pomodoro-timer-button" onClick={() => setShowSettings(!showSettings)}>
+              Settings
+            </button>
+          </div>
+
+          {showSettings && (
+            <div className="pomodoro-timer-settings">
+              <label>
+                Session Length (minutes):
+                <input
+                  type="number"
+                  value={sessionLength}
+                  onChange={(e) => handleSessionLengthChange(Number(e.target.value))}
+                />
+              </label>
+              <label>
+                Break Length (minutes):
+                <input
+                  type="number"
+                  value={breakLength}
+                  onChange={(e) => handleBreakLengthChange(Number(e.target.value))}
+                />
+              </label>
+            </div>
+          )}
+
+        </div>
+
+        {/* ---------------------------------------------------------------- */}
 
       </div>
 
