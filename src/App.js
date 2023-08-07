@@ -70,16 +70,20 @@ const PomodoroTimer = () => {
   };
 
   const handleSessionLengthChange = (value) => {
-    setSessionLength(value);
+    // Ensure the session length is not less than 1
+    const newSessionLength = Math.max(1, value);
+    setSessionLength(newSessionLength);
     if (!isRunning) {
-      setTimeLeft(value * 60);
+      setTimeLeft(newSessionLength * 60);
     }
   };
-
+  
   const handleBreakLengthChange = (value) => {
-    setBreakLength(value);
+    // Ensure the break length is not less than 1
+    const newBreakLength = Math.max(1, value);
+    setBreakLength(newBreakLength);
   };
-
+  
   // ----------------------------------------------------------------
   const addTask = () => {
     if (taskName.trim() !== "") {
@@ -219,23 +223,25 @@ const PomodoroTimer = () => {
 
           {showSettings && (
             <div className="pomodoro-timer-settings">
-              <label>
-                Session Length (minutes):
-                <input
-                  type="number"
-                  value={sessionLength}
-                  onChange={(e) => handleSessionLengthChange(Number(e.target.value))}
-                />
-              </label>
-              <label>
-                Break Length (minutes):
-                <input
-                  type="number"
-                  value={breakLength}
-                  onChange={(e) => handleBreakLengthChange(Number(e.target.value))}
-                />
-              </label>
-            </div>
+            <label>
+              Session Length (minutes):
+              <input
+                type="number"
+                value={sessionLength}
+                onChange={(e) => handleSessionLengthChange(Number(e.target.value))}
+                min="1" // Add minimum value attribute for HTML5 validation
+              />
+            </label>
+            <label>
+              Break Length (minutes):
+              <input
+                type="number"
+                value={breakLength}
+                onChange={(e) => handleBreakLengthChange(Number(e.target.value))}
+                min="1" // Add minimum value attribute for HTML5 validation
+              />
+            </label>
+          </div>
           )}
 
         </div>
