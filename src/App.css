@@ -85,7 +85,7 @@ h3 {
 
 .active-task {
   background-color: #f9f9f9;
-  align-items: center;
+  text-align: center;
 }
 
 .add-task-container {
