@@ -133,8 +133,10 @@ h3 {
 }
 
 .pomodoro-timer-settings input {
-  width: 100px;
+  width: 35px;
   padding: 5px;
+  height: 25px;
+  margin-top: 10px;
 }
 
 /* Responsive CSS for Mobile View */

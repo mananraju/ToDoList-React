@@ -223,8 +223,8 @@ const PomodoroTimer = () => {
 
           {showSettings && (
             <div className="pomodoro-timer-settings">
-            <label>
-              Session Length (minutes):
+            <label style={{display:'flex', justifyContent:'space-between'}}>
+              <p>Session Length (minutes):</p>
               <input
                 type="number"
                 value={sessionLength}
@@ -232,8 +232,8 @@ const PomodoroTimer = () => {
                 min="1" // Add minimum value attribute for HTML5 validation
               />
             </label>
-            <label>
-              Break Length (minutes):
+            <label style={{display:'flex', justifyContent:'space-between'}}>
+            <p>Break Length (minutes):</p>
               <input
                 type="number"
                 value={breakLength}
