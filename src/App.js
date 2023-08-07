@@ -17,6 +17,12 @@ const PomodoroTimer = () => {
   const [breakLength, setBreakLength] = React.useState(5); // 5 minutes (default break length)
   const [showSettings, setShowSettings] = React.useState(false);
 
+//save settings
+const [editedSessionLength, setEditedSessionLength] = React.useState(sessionLength);
+const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
+
+
+
 
   // ----------------------------------------------------------------
 
@@ -28,13 +34,13 @@ const PomodoroTimer = () => {
         setTimeLeft((prevTime) => prevTime - 1);
       }, 1000);
     } else if (timeLeft === 0) {
-      // Timer finished, switch to break or next session
       setIsRunning(false);
       if (currentSession < numOfSessions) {
-        // Start the break
+        // Start the break immediately
         setActiveTaskMessage('Just Chill!!!');
         setCurrentSession((prevSession) => prevSession + 1);
         setTimeLeft(breakLength * 60);
+        setIsRunning(true); // Start the break session automatically
       } else {
         // All sessions completed, show completion message and reset
         setActiveTaskMessage('All sessions completed! Great work!');
@@ -42,10 +48,11 @@ const PomodoroTimer = () => {
         setTimeLeft(sessionLength * 60);
       }
     }
-
-    // Clean up the timer when component unmounts or timer is paused
+  
+    // Clean up the timer when the component unmounts or the timer is paused
     return () => clearInterval(timer);
   }, [isRunning, timeLeft, currentSession, numOfSessions, breakLength, sessionLength]);
+  
 
   // ----------------------------------------------------------------
   const formatTime = (time) => {
@@ -64,24 +71,22 @@ const PomodoroTimer = () => {
 
   const resetTimer = () => {
     setIsRunning(false);
-    setTimeLeft(sessionLength * 60);
-    setCurrentSession(1);
     setActiveTaskMessage('');
   };
-
-  const handleSessionLengthChange = (value) => {
-    // Ensure the session length is not less than 1
-    const newSessionLength = Math.max(1, value);
-    setSessionLength(newSessionLength);
-    if (!isRunning) {
-      setTimeLeft(newSessionLength * 60);
-    }
-  };
   
-  const handleBreakLengthChange = (value) => {
-    // Ensure the break length is not less than 1
-    const newBreakLength = Math.max(1, value);
-    setBreakLength(newBreakLength);
+  
+  const handleSaveSettings = () => {
+    // Apply the edited session and break lengths
+    setSessionLength(editedSessionLength);
+    setBreakLength(editedBreakLength);
+  
+    // Hide the settings
+    setShowSettings(false);
+  
+    // If the timer is not running, update the timeLeft to the new session length
+    if (!isRunning) {
+      setTimeLeft(editedSessionLength * 60);
+    }
   };
   
   // ----------------------------------------------------------------
@@ -222,27 +227,32 @@ const PomodoroTimer = () => {
           </div>
 
           {showSettings && (
-            <div className="pomodoro-timer-settings">
-            <label style={{display:'flex', justifyContent:'space-between'}}>
-              <p>Session Length (minutes):</p>
-              <input
-                type="number"
-                value={sessionLength}
-                onChange={(e) => handleSessionLengthChange(Number(e.target.value))}
-                min="1" // Add minimum value attribute for HTML5 validation
-              />
-            </label>
-            <label style={{display:'flex', justifyContent:'space-between'}}>
-            <p>Break Length (minutes):</p>
-              <input
-                type="number"
-                value={breakLength}
-                onChange={(e) => handleBreakLengthChange(Number(e.target.value))}
-                min="1" // Add minimum value attribute for HTML5 validation
-              />
-            </label>
-          </div>
-          )}
+  <div className="pomodoro-timer-settings">
+    <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <p>Session Length (minutes):</p>
+      <input
+        type="number"
+        value={editedSessionLength}
+        onChange={(e) => setEditedSessionLength(Math.max(1, Number(e.target.value)))}
+        min="1" // Set the minimum value to 1
+      />
+    </label>
+    <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <p>Break Length (minutes):</p>
+      <input
+        type="number"
+        value={editedBreakLength}
+        onChange={(e) => setEditedBreakLength(Math.max(1, Number(e.target.value)))}
+        min="1" // Set the minimum value to 1
+      />
+    </label>
+    <button className="pomodoro-timer-button" onClick={handleSaveSettings}>
+      Save
+    </button>
+  </div>
+)}
+
+
 
         </div>
 
