@@ -2,16 +2,18 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #ffffff;
+  background-color: #f2f2f2;
 }
 
 h1 {
   text-align: center;
   margin: 20px 0;
 }
-h3{
+
+h3 {
   text-align: center;
 }
+
 .main-container {
   display: flex;
   flex-wrap: wrap;
@@ -19,22 +21,17 @@ h3{
   margin: 20px;
 }
 
-.pomodoro-task-container {
-  flex: 1;
-  max-width: 400px;
-  background-color: #ff0000;
-  border-radius: 5px;
-  padding: 20px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-}
-
+.pomodoro-task-container,
 .pomodoro-timer-container {
   flex: 1;
   max-width: 400px;
-  background-color: #ff0000;
+  background-color: #fff;
   border-radius: 5px;
   padding: 20px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.pomodoro-timer-container {
   margin-top: 20px;
 }
 
@@ -45,12 +42,12 @@ h3{
 .pomodoro-timer-clock {
   font-size: 48px;
   font-weight: bold;
-  color: #000000;
+  color: #333;
 }
 
 .pomodoro-timer-session {
   font-size: 18px;
-  color: #000000;
+  color: #555;
   margin-top: 10px;
 }
 
@@ -61,8 +58,8 @@ h3{
 }
 
 .pomodoro-timer-button {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #333;
+  color: #fff;
   border: none;
   border-radius: 3px;
   padding: 10px 20px;
@@ -72,8 +69,7 @@ h3{
 }
 
 .pomodoro-timer-button:hover {
-  background-color: #000000;
-  color: white;
+  background-color: #444;
 }
 
 .task-list {
@@ -88,7 +84,7 @@ h3{
 }
 
 .active-task {
-  background-color: #f0f0f0;
+  background-color: #f9f9f9;
 }
 
 .add-task-container {
@@ -101,12 +97,12 @@ h3{
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 3px 0 0 3px;
-  margin-right: 10px; 
+  margin-right: 10px;
 }
 
 .add-task-container button {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #333;
+  color: #fff;
   border: none;
   border-radius: 0 3px 3px 0;
   padding: 10px 20px;
@@ -114,10 +110,9 @@ h3{
   transition: background-color 0.3s ease;
 }
 
-
 .add-task-container button:disabled {
-  background-color: #000000;
-  color: white;
+  background-color: #555;
+  color: #ccc;
   cursor: not-allowed;
 }
 
@@ -141,7 +136,6 @@ h3{
 }
 
 /* Responsive CSS for Mobile View */
-
 @media (max-width: 768px) {
   .main-container {
     flex-direction: column;
@@ -171,26 +165,20 @@ h3{
   }
 }
 
-/* Footer Styles */
-
+/* Footer Styles for Mobile and Web View */
 .Footer {
   text-align: center;
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #f2f2f2;
+  color: #555;
   padding: 10px 0;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-
-
-body {
-  line-height: 1.6;
-}
-
-li {
-  list-style: none;
+/* Adjust margin-bottom for main-container to prevent overlap with the footer */
+.main-container {
+  margin-bottom: 60px;
 }
