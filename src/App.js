@@ -72,6 +72,7 @@ const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
   const resetTimer = () => {
     setIsRunning(false);
     setActiveTaskMessage('');
+    setTimeLeft(sessionLength * 60); // Reset timer to initial session length
   };
   
   
