@@ -61,14 +61,7 @@ const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
     return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  const pauseTimer = () => {
-    setIsRunning(false);
-  };
-
-  const startTimer = () => {
-    setIsRunning(true);
-  };
-
+ 
   const resetTimer = () => {
     setIsRunning(false);
     setActiveTaskMessage('');
