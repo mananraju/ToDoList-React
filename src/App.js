@@ -210,15 +210,7 @@ const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
 
 
           <div className="pomodoro-timer-controls">
-            {isRunning ? (
-              <button className="pomodoro-timer-button" onClick={pauseTimer}>
-                Pause
-              </button>
-            ) : (
-              <button className="pomodoro-timer-button" onClick={startTimer}>
-                Start
-              </button>
-            )}
+    
             <button className="pomodoro-timer-button" onClick={resetTimer}>
               Reset
             </button>
