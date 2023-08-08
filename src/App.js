@@ -37,7 +37,7 @@ const PomodoroTimer = () => {
       setIsRunning(false);
       if (currentSession < numOfSessions) {
         // Start the break immediately
-        setActiveTaskMessage('Just Chill!!!');
+        setActiveTaskMessage('Close Your Eyes and Relax!');
         // setCurrentSession((prevSession) => prevSession + 1);
         setTimeLeft(breakLength * 60);
         setIsRunning(true); // Start the break session automatically
