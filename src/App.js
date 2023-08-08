@@ -123,6 +123,13 @@ const PomodoroTimer = () => {
     setTasks(updatedTasks);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      addTask();
+    }
+  };
+  
+
   // ----------------------------------------------------------------
 
   return (
@@ -139,6 +146,7 @@ const PomodoroTimer = () => {
               type="text"
               value={taskName}
               onChange={(e) => setTaskName(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="Enter task name"
             />
             <button
