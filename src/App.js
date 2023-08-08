@@ -142,21 +142,20 @@ const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
         <div className="pomodoro-task-container">
           <h3>ToDo List</h3>
           <div className="add-task-container">
-            <input
-              type="text"
-              value={taskName}
-              onChange={(e) => setTaskName(e.target.value)}
-              placeholder="Enter task name"
-              disabled={isRunning}
-            />
-            <button
-              className="pomodoro-timer-button"
-              onClick={addTask}
-              disabled={isRunning || taskName.trim() === ""}
-            >
-              Add Task
-            </button>
-          </div>
+          <input
+            type="text"
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
+            placeholder="Enter task name"
+          />
+          <button
+            className="pomodoro-timer-button"
+            onClick={addTask}
+            disabled={taskName.trim() === ""}
+          >
+            Add Task
+          </button>
+        </div>
           {tasks.length > 0 && (
             <div className="task-list">
               <h3>Task List:</h3>
