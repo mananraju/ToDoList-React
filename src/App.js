@@ -176,16 +176,17 @@ const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
                         >
                           Start Task
                         </button>
-                        <button
+                      </>
+                    )}
+                     <button
                           className="pomodoro-timer-button"
                           onClick={() => handleDeleteTask(index)}
-                          disabled={isRunning}
+                          disabled={task.isRunning?true:false}
                         >
                           Delete
                         </button>
-                      </>
-                    )}
                   </li>
+                  
                 ))}
               </ul>
             </div>
