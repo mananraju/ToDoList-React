@@ -38,7 +38,7 @@ const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
       if (currentSession < numOfSessions) {
         // Start the break immediately
         setActiveTaskMessage('Just Chill!!!');
-        setCurrentSession((prevSession) => prevSession + 1);
+        // setCurrentSession((prevSession) => prevSession + 1);
         setTimeLeft(breakLength * 60);
         setIsRunning(true); // Start the break session automatically
       } else {
