@@ -17,9 +17,9 @@ const PomodoroTimer = () => {
   const [breakLength, setBreakLength] = React.useState(5); // 5 minutes (default break length)
   const [showSettings, setShowSettings] = React.useState(false);
 
-//save settings
-const [editedSessionLength, setEditedSessionLength] = React.useState(sessionLength);
-const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
+  //save settings
+  const [editedSessionLength, setEditedSessionLength] = React.useState(sessionLength);
+  const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
 
 
 
@@ -48,11 +48,11 @@ const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
         setTimeLeft(sessionLength * 60);
       }
     }
-  
+
     // Clean up the timer when the component unmounts or the timer is paused
     return () => clearInterval(timer);
   }, [isRunning, timeLeft, currentSession, numOfSessions, breakLength, sessionLength]);
-  
+
 
   // ----------------------------------------------------------------
   const formatTime = (time) => {
@@ -61,28 +61,28 @@ const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
     return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
- 
+
   const resetTimer = () => {
     setIsRunning(false);
     setActiveTaskMessage('');
     setTimeLeft(sessionLength * 60); // Reset timer to initial session length
   };
-  
-  
+
+
   const handleSaveSettings = () => {
     // Apply the edited session and break lengths
     setSessionLength(editedSessionLength);
     setBreakLength(editedBreakLength);
-  
+
     // Hide the settings
     setShowSettings(false);
-  
+
     // If the timer is not running, update the timeLeft to the new session length
     if (!isRunning) {
       setTimeLeft(editedSessionLength * 60);
     }
   };
-  
+
   // ----------------------------------------------------------------
   const addTask = () => {
     if (taskName.trim() !== "") {
@@ -135,20 +135,20 @@ const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
         <div className="pomodoro-task-container">
           <h3>ToDo List</h3>
           <div className="add-task-container">
-          <input
-            type="text"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-            placeholder="Enter task name"
-          />
-          <button
-            className="pomodoro-timer-button"
-            onClick={addTask}
-            disabled={taskName.trim() === ""}
-          >
-            Add Task
-          </button>
-        </div>
+            <input
+              type="text"
+              value={taskName}
+              onChange={(e) => setTaskName(e.target.value)}
+              placeholder="Enter task name"
+            />
+            <button
+              className="pomodoro-timer-button"
+              onClick={addTask}
+              disabled={taskName.trim() === ""}
+            >
+              Add Task
+            </button>
+          </div>
           {tasks.length > 0 && (
             <div className="task-list">
               <h3>Task List:</h3>
@@ -169,18 +169,19 @@ const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
                         >
                           Start Task
                         </button>
+                        {!task.isRunning && (
+                          <button
+                            className="pomodoro-timer-button"
+                            onClick={() => handleDeleteTask(index)}
+                          >
+                            Delete
+                          </button>
+                        )}
                       </>
                     )}
-                     <button
-                          className="pomodoro-timer-button"
-                          onClick={() => handleDeleteTask(index)}
-                          disabled={task.isRunning?true:false}
-                        >
-                          Delete
-                        </button>
                   </li>
-                  
                 ))}
+
               </ul>
             </div>
           )}
@@ -203,7 +204,7 @@ const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
 
 
           <div className="pomodoro-timer-controls">
-    
+
             <button className="pomodoro-timer-button" onClick={resetTimer}>
               Reset
             </button>
@@ -213,30 +214,30 @@ const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
           </div>
 
           {showSettings && (
-  <div className="pomodoro-timer-settings">
-    <label style={{ display: 'flex', justifyContent: 'space-between' }}>
-      <p>Session Length (minutes):</p>
-      <input
-        type="number"
-        value={editedSessionLength}
-        onChange={(e) => setEditedSessionLength(Math.max(1, Number(e.target.value)))}
-        min="1" // Set the minimum value to 1
-      />
-    </label>
-    <label style={{ display: 'flex', justifyContent: 'space-between' }}>
-      <p>Break Length (minutes):</p>
-      <input
-        type="number"
-        value={editedBreakLength}
-        onChange={(e) => setEditedBreakLength(Math.max(1, Number(e.target.value)))}
-        min="1" // Set the minimum value to 1
-      />
-    </label>
-    <button className="pomodoro-timer-button" onClick={handleSaveSettings}>
-      Save
-    </button>
-  </div>
-)}
+            <div className="pomodoro-timer-settings">
+              <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <p>Session Length (minutes):</p>
+                <input
+                  type="number"
+                  value={editedSessionLength}
+                  onChange={(e) => setEditedSessionLength(Math.max(1, Number(e.target.value)))}
+                  min="1" // Set the minimum value to 1
+                />
+              </label>
+              <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <p>Break Length (minutes):</p>
+                <input
+                  type="number"
+                  value={editedBreakLength}
+                  onChange={(e) => setEditedBreakLength(Math.max(1, Number(e.target.value)))}
+                  min="1" // Set the minimum value to 1
+                />
+              </label>
+              <button className="pomodoro-timer-button" onClick={handleSaveSettings}>
+                Save
+              </button>
+            </div>
+          )}
 
 
 
