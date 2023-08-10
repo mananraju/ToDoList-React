@@ -21,6 +21,8 @@ const PomodoroTimer = () => {
   const [editedSessionLength, setEditedSessionLength] = useState(sessionLength);
   const [editedBreakLength, setEditedBreakLength] = useState(breakLength);
 
+  const alertSound = new Audio ('/alert.mp3');// alertSound
+
 
 
 
@@ -41,6 +43,8 @@ const PomodoroTimer = () => {
         // setCurrentSession((prevSession) => prevSession + 1);
         setTimeLeft(breakLength * 60);
         setIsRunning(true); // Start the break session automatically
+         // Play the alert sound
+         alertSound.play();
       } else {
         // All sessions completed, show completion message and reset
         setActiveTaskMessage('All sessions completed! Great work!');
