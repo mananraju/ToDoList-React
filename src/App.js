@@ -1,25 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 const PomodoroTimer = () => {
   // React.useState for the Task
-  const [taskName, setTaskName] = React.useState("");
-  const [tasks, setTasks] = React.useState([]);
-  const [activeTaskIndex, setActiveTaskIndex] = React.useState(null);
+  const [taskName, setTaskName] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [activeTaskIndex, setActiveTaskIndex] = useState(null);
 
-  // React.useState for the Timer
-  const [activeTaskMessage, setActiveTaskMessage] = React.useState('');
-  const [timeLeft, setTimeLeft] = React.useState(1500); // 1500 seconds = 25 minutes (default session length)
-  const [currentSession, setCurrentSession] = React.useState(1);
-  const [numOfSessions, setNumOfSessions] = React.useState(4);
-  const [isRunning, setIsRunning] = React.useState(false);
-  const [sessionLength, setSessionLength] = React.useState(25); // 25 minutes (default session length)
-  const [breakLength, setBreakLength] = React.useState(5); // 5 minutes (default break length)
-  const [showSettings, setShowSettings] = React.useState(false);
+  // useState for the Timer
+  const [activeTaskMessage, setActiveTaskMessage] = useState('');
+  const [timeLeft, setTimeLeft] = useState(1500); // 1500 seconds = 25 minutes (default session length)
+  const [currentSession, setCurrentSession] = useState(1);
+  const [numOfSessions, setNumOfSessions] = useState(4);
+  const [isRunning, setIsRunning] = useState(false);
+  const [sessionLength, setSessionLength] = useState(25); // 25 minutes (default session length)
+  const [breakLength, setBreakLength] = useState(5); // 5 minutes (default break length)
+  const [showSettings, setShowSettings] = useState(false);
 
   //save settings
-  const [editedSessionLength, setEditedSessionLength] = React.useState(sessionLength);
-  const [editedBreakLength, setEditedBreakLength] = React.useState(breakLength);
+  const [editedSessionLength, setEditedSessionLength] = useState(sessionLength);
+  const [editedBreakLength, setEditedBreakLength] = useState(breakLength);
+
+  const alertSound = new Audio ('/alert.mp3');// alertSound
 
 
 
@@ -41,6 +43,8 @@ const PomodoroTimer = () => {
         // setCurrentSession((prevSession) => prevSession + 1);
         setTimeLeft(breakLength * 60);
         setIsRunning(true); // Start the break session automatically
+         // Play the alert sound
+         alertSound.play();
       } else {
         // All sessions completed, show completion message and reset
         setActiveTaskMessage('All sessions completed! Great work!');
