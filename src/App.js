@@ -55,6 +55,7 @@ const PomodoroTimer = () => {
 
     // Clean up the timer when the component unmounts or the timer is paused
     return () => clearInterval(timer);
+    // eslint-disable-next-line
   }, [isRunning, timeLeft, currentSession, numOfSessions, breakLength, sessionLength]);
 
 
