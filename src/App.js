@@ -11,7 +11,7 @@ const PomodoroTimer = () => {
   const [activeTaskMessage, setActiveTaskMessage] = useState('');
   const [timeLeft, setTimeLeft] = useState(1500); // 1500 seconds = 25 minutes (default session length)
   const [currentSession, setCurrentSession] = useState(1);
-  const [numOfSessions, setNumOfSessions] = useState(3);
+  const [numOfSessions, setNumOfSessions] = useState(4);
   const [isRunning, setIsRunning] = useState(false);
   const [sessionLength, setSessionLength] = useState(25); // 25 minutes (default session length)
   const [breakLength, setBreakLength] = useState(5); // 5 minutes (default break length)
