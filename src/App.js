@@ -243,7 +243,7 @@ const PomodoroTimer = () => {
                   type="number"
                   value={editedBreakLength}
                   onChange={(e) => setEditedBreakLength(Math.max(1, Number(e.target.value)))}
-                  min="1" // Set the minimum value to 1
+                  min="5" // Set the minimum value to 5
                 />
               </label>
               <button className="pomodoro-timer-button" onClick={handleSaveSettings}>
